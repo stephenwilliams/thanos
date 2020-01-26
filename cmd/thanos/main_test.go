@@ -11,6 +11,7 @@ import (
 	"path/filepath"
 
 	"github.com/thanos-io/thanos/pkg/block/metadata"
+	"github.com/thanos-io/thanos/pkg/testutil/e2eutil"
 
 	"testing"
 	"time"
@@ -41,7 +42,7 @@ func TestCleanupIndexCacheFolder(t *testing.T) {
 	// Upload one compaction lvl = 2 block, one compaction lvl = 1.
 	// We generate index cache files only for lvl > 1 blocks.
 	{
-		id, err := testutil.CreateBlock(
+		id, err := e2eutil.CreateBlock(
 			ctx,
 			dir,
 			[]labels.Labels{{{Name: "a", Value: "1"}}},
@@ -59,7 +60,7 @@ func TestCleanupIndexCacheFolder(t *testing.T) {
 		testutil.Ok(t, block.Upload(ctx, logger, bkt, path.Join(dir, id.String())))
 	}
 	{
-		id, err := testutil.CreateBlock(
+		id, err := e2eutil.CreateBlock(
 			ctx,
 			dir,
 			[]labels.Labels{{{Name: "a", Value: "1"}}},
@@ -102,7 +103,7 @@ func TestCleanupDownsampleCacheFolder(t *testing.T) {
 	bkt := inmem.NewBucket()
 	var id ulid.ULID
 	{
-		id, err = testutil.CreateBlock(
+		id, err = e2eutil.CreateBlock(
 			ctx,
 			dir,
 			[]labels.Labels{{{Name: "a", Value: "1"}}},
